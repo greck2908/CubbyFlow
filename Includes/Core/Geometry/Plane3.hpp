@@ -59,7 +59,7 @@ class Plane3 final : public Surface3
     //! Returns true if bounding box can be defined.
     [[nodiscard]] bool IsBounded() const override;
 
-    //! Returns builder fox Plane3.
+    //! Returns builder for Plane3.
     [[nodiscard]] static Builder GetBuilder();
 
     //! Plane normal.

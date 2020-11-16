@@ -37,7 +37,7 @@ class RigidBodyCollider3 final : public Collider3
     //! Returns the velocity of the collider at given \p point.
     [[nodiscard]] Vector3D VelocityAt(const Vector3D& point) const override;
 
-    //! Returns builder fox RigidBodyCollider3.
+    //! Returns builder for RigidBodyCollider3.
     [[nodiscard]] static Builder GetBuilder();
 
     //! Linear velocity of the rigid body.

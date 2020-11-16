@@ -79,7 +79,7 @@ class ImplicitSurfaceSet2 final : public ImplicitSurface2
     //! Adds an implicit surface instance.
     void AddSurface(const ImplicitSurface2Ptr& surface);
 
-    //! Returns builder fox ImplicitSurfaceSet2.
+    //! Returns builder for ImplicitSurfaceSet2.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

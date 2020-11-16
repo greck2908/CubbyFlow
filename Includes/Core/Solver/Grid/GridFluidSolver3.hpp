@@ -195,7 +195,7 @@ class GridFluidSolver3 : public PhysicsAnimation
     //! Sets the emitter.
     void SetEmitter(const GridEmitter3Ptr& newEmitter);
 
-    //! Returns builder fox GridFluidSolver3.
+    //! Returns builder for GridFluidSolver3.
     [[nodiscard]] static Builder GetBuilder();
 
  protected:

@@ -127,7 +127,7 @@ class ParticleSystemSolver3 : public PhysicsAnimation
     //!
     void SetWind(const VectorField3Ptr& newWind);
 
-    //! Returns builder fox ParticleSystemSolver3.
+    //! Returns builder for ParticleSystemSolver3.
     [[nodiscard]] static Builder GetBuilder();
 
  protected:

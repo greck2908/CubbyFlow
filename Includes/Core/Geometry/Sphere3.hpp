@@ -50,7 +50,7 @@ class Sphere3 final : public Surface3
     //! Default move assignment operator.
     Sphere3& operator=(Sphere3&&) noexcept = default;
 
-    //! Returns builder fox Sphere3.
+    //! Returns builder for Sphere3.
     [[nodiscard]] static Builder GetBuilder();
 
     //! Center of the sphere.

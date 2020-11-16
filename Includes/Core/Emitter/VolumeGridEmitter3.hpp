@@ -114,7 +114,7 @@ class VolumeGridEmitter3 final : public GridEmitter3
     //! Returns true if this emits only once.
     [[nodiscard]] bool GetIsOneShot() const;
 
-    //! Returns builder fox VolumeGridEmitter3.
+    //! Returns builder for VolumeGridEmitter3.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

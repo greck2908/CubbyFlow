@@ -96,7 +96,7 @@ class VertexCenteredVectorGrid2 final : public CollocatedVectorGrid2
     //! Returns the copy of the grid instance.
     [[nodiscard]] std::shared_ptr<VectorGrid2> Clone() const override;
 
-    //! Returns builder fox VertexCenteredVectorGrid2.
+    //! Returns builder for VertexCenteredVectorGrid2.
     [[nodiscard]] static Builder GetBuilder();
 };
 

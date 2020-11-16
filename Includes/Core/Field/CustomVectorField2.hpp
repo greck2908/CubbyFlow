@@ -65,7 +65,7 @@ class CustomVectorField2 final : public VectorField2
     [[nodiscard]] std::function<Vector2D(const Vector2D&)> Sampler()
         const override;
 
-    //! Returns builder fox CustomVectorField2.
+    //! Returns builder for CustomVectorField2.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

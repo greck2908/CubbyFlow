@@ -132,7 +132,7 @@ class SPHSolver3 : public ParticleSystemSolver3
     //! Returns the SPH system data.
     [[nodiscard]] SPHSystemData3Ptr GetSPHSystemData() const;
 
-    //! Returns builder fox SPHSolver3.
+    //! Returns builder for SPHSolver3.
     [[nodiscard]] static Builder GetBuilder();
 
  protected:

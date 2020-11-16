@@ -31,7 +31,7 @@ class ConstantVectorField3 final : public VectorField3
     [[nodiscard]] std::function<Vector3D(const Vector3D&)> Sampler()
         const override;
 
-    //! Returns builder fox ConstantVectorField3.
+    //! Returns builder for ConstantVectorField3.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

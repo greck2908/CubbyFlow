@@ -158,7 +158,7 @@ class PointHashGridSearcher3 final : public PointNeighborSearcher3
     //! Deserializes the neighbor searcher from the buffer.
     void Deserialize(const std::vector<uint8_t>& buffer) override;
 
-    //! Returns builder fox PointHashGridSearcher3.
+    //! Returns builder for PointHashGridSearcher3.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

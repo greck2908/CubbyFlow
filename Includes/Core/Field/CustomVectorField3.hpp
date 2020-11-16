@@ -65,7 +65,7 @@ class CustomVectorField3 final : public VectorField3
     [[nodiscard]] std::function<Vector3D(const Vector3D&)> Sampler()
         const override;
 
-    //! Returns builder fox CustomVectorField2.
+    //! Returns builder for CustomVectorField2.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

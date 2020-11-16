@@ -91,7 +91,7 @@ class PointKdTreeSearcher3 final : public PointNeighborSearcher3
     //! Deserializes the neighbor searcher from the buffer.
     void Deserialize(const std::vector<uint8_t>& buffer) override;
 
-    //! Returns builder fox PointKdTreeSearcher3.
+    //! Returns builder for PointKdTreeSearcher3.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

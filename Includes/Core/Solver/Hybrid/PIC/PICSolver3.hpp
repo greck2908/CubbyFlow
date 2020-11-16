@@ -66,7 +66,7 @@ class PICSolver3 : public GridFluidSolver3
     //! Sets the particle emitter.
     void SetParticleEmitter(const ParticleEmitter3Ptr& newEmitter);
 
-    //! Returns builder fox PICSolver3.
+    //! Returns builder for PICSolver3.
     [[nodiscard]] static Builder GetBuilder();
 
  protected:

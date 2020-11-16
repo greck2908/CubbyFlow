@@ -56,7 +56,7 @@ class Box2 final : public Surface2
     //! Default move assignment operator.
     Box2& operator=(Box2&& other) noexcept = default;
 
-    //! Returns builder fox Box2.
+    //! Returns builder for Box2.
     [[nodiscard]] static Builder GetBuilder();
 
     //! Bounding box of this box.

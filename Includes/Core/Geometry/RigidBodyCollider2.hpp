@@ -37,7 +37,7 @@ class RigidBodyCollider2 final : public Collider2
     //! Returns the velocity of the collider at given \p point.
     [[nodiscard]] Vector2D VelocityAt(const Vector2D& point) const override;
 
-    //! Returns builder fox RigidBodyCollider2.
+    //! Returns builder for RigidBodyCollider2.
     [[nodiscard]] static Builder GetBuilder();
 
     //! Linear velocity of the rigid body.

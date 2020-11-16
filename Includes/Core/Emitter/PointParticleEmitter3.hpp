@@ -61,7 +61,7 @@ class PointParticleEmitter3 final : public ParticleEmitter3
     //! Sets max number of particles to be emitted.
     void SetMaxNumberOfParticles(size_t maxNumberOfParticles);
 
-    //! Returns builder fox PointParticleEmitter3.
+    //! Returns builder for PointParticleEmitter3.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

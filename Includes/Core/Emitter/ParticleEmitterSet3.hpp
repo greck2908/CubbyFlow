@@ -47,7 +47,7 @@ class ParticleEmitterSet3 final : public ParticleEmitter3
     //! Adds sub-emitter.
     void AddEmitter(const ParticleEmitter3Ptr& emitter);
 
-    //! Returns builder fox ParticleEmitterSet3.
+    //! Returns builder for ParticleEmitterSet3.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

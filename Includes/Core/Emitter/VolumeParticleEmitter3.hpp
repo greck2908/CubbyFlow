@@ -143,7 +143,7 @@ class VolumeParticleEmitter3 final : public ParticleEmitter3
     //! Sets the linear velocity of the emitter.
     void SetAngularVelocity(const Vector3D& newAngularVel);
 
-    //! Returns builder fox VolumeParticleEmitter3.
+    //! Returns builder for VolumeParticleEmitter3.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

@@ -195,7 +195,7 @@ class GridFluidSolver2 : public PhysicsAnimation
     //! Sets the emitter.
     void SetEmitter(const GridEmitter2Ptr& newEmitter);
 
-    //! Returns builder fox GridFluidSolver2.
+    //! Returns builder for GridFluidSolver2.
     [[nodiscard]] static Builder GetBuilder();
 
  protected:

@@ -191,7 +191,7 @@ class TriangleMesh3 final : public Surface3
     //! Reads the mesh in obj format from the file.
     [[nodiscard]] bool ReadObj(const std::string& fileName);
 
-    //! Returns builder fox TriangleMesh3.
+    //! Returns builder for TriangleMesh3.
     [[nodiscard]] static Builder GetBuilder();
 
  protected:

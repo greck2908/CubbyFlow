@@ -265,7 +265,7 @@ class FaceCenteredGrid3 final : public VectorGrid3
     [[nodiscard]] std::function<Vector3D(const Vector3D&)> Sampler()
         const override;
 
-    //! Returns builder fox FaceCenteredGrid3.
+    //! Returns builder for FaceCenteredGrid3.
     [[nodiscard]] static Builder GetBuilder();
 
  protected:

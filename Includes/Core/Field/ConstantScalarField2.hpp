@@ -31,7 +31,7 @@ class ConstantScalarField2 final : public ScalarField2
     [[nodiscard]] std::function<double(const Vector2D&)> Sampler()
         const override;
 
-    //! Returns builder fox ConstantScalarField2.
+    //! Returns builder for ConstantScalarField2.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

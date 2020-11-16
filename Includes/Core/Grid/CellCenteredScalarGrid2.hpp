@@ -85,7 +85,7 @@ class CellCenteredScalarGrid2 final : public ScalarGrid2
     //! Returns the copy of the grid instance.
     [[nodiscard]] std::shared_ptr<ScalarGrid2> Clone() const override;
 
-    //! Returns builder fox CellCenteredScalarGrid2.
+    //! Returns builder for CellCenteredScalarGrid2.
     [[nodiscard]] static Builder GetBuilder();
 };
 

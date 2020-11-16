@@ -211,7 +211,7 @@ class FaceCenteredGrid2 final : public VectorGrid2
     [[nodiscard]] std::function<Vector2D(const Vector2D&)> Sampler()
         const override;
 
-    //! Returns builder fox FaceCenteredGrid2.
+    //! Returns builder for FaceCenteredGrid2.
     [[nodiscard]] static Builder GetBuilder();
 
  protected:

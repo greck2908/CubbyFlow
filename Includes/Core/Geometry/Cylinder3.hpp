@@ -51,7 +51,7 @@ class Cylinder3 final : public Surface3
     //! Default move assignment operator.
     Cylinder3& operator=(Cylinder3&&) noexcept = default;
 
-    //! Returns builder fox Cylinder3.
+    //! Returns builder for Cylinder3.
     [[nodiscard]] static Builder GetBuilder();
 
     //! Center of the cylinder.

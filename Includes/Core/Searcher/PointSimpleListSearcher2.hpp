@@ -99,7 +99,7 @@ class PointSimpleListSearcher2 final : public PointNeighborSearcher2
     //! Deserializes the neighbor searcher from the buffer.
     void Deserialize(const std::vector<uint8_t>& buffer) override;
 
-    //! Returns builder fox PointSimpleListSearcher2.
+    //! Returns builder for PointSimpleListSearcher2.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

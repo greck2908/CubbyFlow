@@ -41,7 +41,7 @@ class ColliderSet2 final : public Collider2
     //! Returns collider at index \p i.
     [[nodiscard]] Collider2Ptr Collider(size_t i) const;
 
-    //! Returns builder fox ColliderSet2.
+    //! Returns builder for ColliderSet2.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

@@ -68,7 +68,7 @@ class FLIPSolver3 : public PICSolver3
     //!
     void SetPICBlendingFactor(double factor);
 
-    //! Returns builder fox FLIPSolver3.
+    //! Returns builder for FLIPSolver3.
     [[nodiscard]] static Builder GetBuilder();
 
  protected:

@@ -49,7 +49,7 @@ class GridEmitterSet2 final : public GridEmitter2
     //! Adds sub-emitter.
     void AddEmitter(const GridEmitter2Ptr& emitter);
 
-    //! Returns builder fox GridEmitterSet2.
+    //! Returns builder for GridEmitterSet2.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

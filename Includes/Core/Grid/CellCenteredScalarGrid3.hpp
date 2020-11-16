@@ -88,7 +88,7 @@ class CellCenteredScalarGrid3 final : public ScalarGrid3
     //! Sets the contents with the given \p other grid.
     void Set(const CellCenteredScalarGrid3& other);
 
-    //! Returns builder fox CellCenteredScalarGrid3.
+    //! Returns builder for CellCenteredScalarGrid3.
     [[nodiscard]] static Builder GetBuilder();
 };
 

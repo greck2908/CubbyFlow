@@ -142,7 +142,7 @@ class VolumeParticleEmitter2 final : public ParticleEmitter2
     //! Sets the linear velocity of the emitter.
     void SetAngularVelocity(double newAngularVel);
 
-    //! Returns builder fox VolumeParticleEmitter2.
+    //! Returns builder for VolumeParticleEmitter2.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

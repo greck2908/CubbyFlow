@@ -51,7 +51,7 @@ class APICSolver2 : public PICSolver2
     //! Deleted move assignment operator.
     APICSolver2& operator=(APICSolver2&&) noexcept = delete;
 
-    //! Returns builder fox APICSolver2.
+    //! Returns builder for APICSolver2.
     [[nodiscard]] static Builder GetBuilder();
 
  protected:

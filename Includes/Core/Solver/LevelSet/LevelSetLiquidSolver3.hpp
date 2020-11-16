@@ -89,7 +89,7 @@ class LevelSetLiquidSolver3 : public GridFluidSolver3
     //!
     [[nodiscard]] double ComputeVolume() const;
 
-    //! Returns builder fox LevelSetLiquidSolver3.
+    //! Returns builder for LevelSetLiquidSolver3.
     [[nodiscard]] static Builder GetBuilder();
 
  protected:

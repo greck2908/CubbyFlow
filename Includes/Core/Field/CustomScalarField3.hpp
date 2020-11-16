@@ -65,7 +65,7 @@ class CustomScalarField3 final : public ScalarField3
     //! Returns the Laplacian at given position \p x.
     [[nodiscard]] double Laplacian(const Vector3D& x) const override;
 
-    //! Returns builder fox CustomScalarField3.
+    //! Returns builder for CustomScalarField3.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

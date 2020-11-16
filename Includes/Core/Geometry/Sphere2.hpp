@@ -50,7 +50,7 @@ class Sphere2 final : public Surface2
     //! Default move assignment operator.
     Sphere2& operator=(Sphere2&&) noexcept = default;
 
-    //! Returns builder fox Sphere2.
+    //! Returns builder for Sphere2.
     [[nodiscard]] static Builder GetBuilder();
 
     //! Center of the sphere.

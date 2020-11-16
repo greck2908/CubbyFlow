@@ -31,7 +31,7 @@ class ConstantVectorField2 final : public VectorField2
     [[nodiscard]] std::function<Vector2D(const Vector2D&)> Sampler()
         const override;
 
-    //! Returns builder fox ConstantVectorField2.
+    //! Returns builder for ConstantVectorField2.
     [[nodiscard]] static Builder GetBuilder();
 
  private:

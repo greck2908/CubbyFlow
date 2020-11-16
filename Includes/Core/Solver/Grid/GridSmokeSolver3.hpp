@@ -171,7 +171,7 @@ class GridSmokeSolver3 : public GridFluidSolver3
     //! Returns temperature field.
     [[nodiscard]] ScalarGrid3Ptr GetTemperature() const;
 
-    //! Returns builder fox GridSmokeSolver3.
+    //! Returns builder for GridSmokeSolver3.
     [[nodiscard]] static Builder GetBuilder();
 
  protected:

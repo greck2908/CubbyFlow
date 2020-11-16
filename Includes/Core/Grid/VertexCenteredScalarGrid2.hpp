@@ -87,7 +87,7 @@ class VertexCenteredScalarGrid2 final : public ScalarGrid2
     //! Sets the contents with the given \p other grid.
     void Set(const VertexCenteredScalarGrid2& other);
 
-    //! Returns builder fox VertexCenteredScalarGrid2.
+    //! Returns builder for VertexCenteredScalarGrid2.
     [[nodiscard]] static Builder GetBuilder();
 };
 

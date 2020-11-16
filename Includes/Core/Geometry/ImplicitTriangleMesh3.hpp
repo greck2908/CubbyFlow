@@ -54,7 +54,7 @@ class ImplicitTriangleMesh3 final : public ImplicitSurface3
     ImplicitTriangleMesh3& operator=(ImplicitTriangleMesh3&&) noexcept =
         default;
 
-    //! Returns builder fox ImplicitTriangleMesh3.
+    //! Returns builder for ImplicitTriangleMesh3.
     [[nodiscard]] static Builder GetBuilder();
 
     //! Returns grid data.

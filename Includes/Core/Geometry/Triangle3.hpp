@@ -64,7 +64,7 @@ class Triangle3 final : public Surface3
     //! Set Triangle3::normals to the face normal.
     void SetNormalsToFaceNormal();
 
-    //! Returns builder fox Triangle3.
+    //! Returns builder for Triangle3.
     [[nodiscard]] static Builder GetBuilder();
 
     //! Three points.

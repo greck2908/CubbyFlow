@@ -73,7 +73,7 @@ class PCISPHSolver2 : public SPHSolver2
     //!
     void SetMaxNumberOfIterations(unsigned int n);
 
-    //! Returns builder fox PCISPHSolver2.
+    //! Returns builder for PCISPHSolver2.
     [[nodiscard]] static Builder GetBuilder();
 
  protected:

@@ -56,7 +56,7 @@ class Box3 final : public Surface3
     //! Default move assignment operator.
     Box3& operator=(Box3&& other) noexcept = default;
 
-    //! Returns builder fox Box3.
+    //! Returns builder for Box3.
     [[nodiscard]] static Builder GetBuilder();
 
     //! Bounding box of this box.

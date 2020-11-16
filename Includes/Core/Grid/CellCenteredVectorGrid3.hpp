@@ -98,7 +98,7 @@ class CellCenteredVectorGrid3 final : public CollocatedVectorGrid3
     //! Sets the contents with the given \p other grid.
     void Set(const CellCenteredVectorGrid3& other);
 
-    //! Returns the builder fox CellCenteredVectorGrid3.
+    //! Returns the builder for CellCenteredVectorGrid3.
     [[nodiscard]] static Builder GetBuilder();
 };
 

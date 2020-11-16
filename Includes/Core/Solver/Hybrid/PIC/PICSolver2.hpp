@@ -118,7 +118,7 @@ class PICSolver2::Builder final : public GridFluidSolverBuilderBase2<Builder>
     //! Builds PICSolver2.
     [[nodiscard]] PICSolver2 Build() const;
 
-    //! Builds shared pointer of PicSolver2 instance.
+    //! Builds shared pointer of PICSolver2 instance.
     [[nodiscard]] PICSolver2Ptr MakeShared() const;
 };
 }  // namespace CubbyFlow

@@ -12,6 +12,11 @@
 
 namespace CubbyFlow
 {
+MPMSolver3::Builder MPMSolver3::GetBuilder()
+{
+    return Builder{};
+}
+
 MPMSolver3 MPMSolver3::Builder::Build() const
 {
     return MPMSolver3{};

@@ -29,6 +29,9 @@ class MPMSolver3 : public GridFluidSolver3
 {
  public:
     class Builder;
+
+    //! Returns builder for MPMSolver3.
+    [[nodiscard]] static Builder GetBuilder();
 };
 
 //! Shared pointer type for the MPMSolver3.

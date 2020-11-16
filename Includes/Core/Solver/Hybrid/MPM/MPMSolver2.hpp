@@ -27,6 +27,24 @@ namespace CubbyFlow
 //!
 class MPMSolver2 : public GridFluidSolver2
 {
+public:
+    class Builder;
+};
+
+//! Shared pointer type for the MPMSolver2.
+using MPMSolver2Ptr = std::shared_ptr<MPMSolver2>;
+
+//!
+//! \brief Front-end to create MPMSolver2 objects step by step.
+//!
+class MPMSolver2::Builder final : public GridFluidSolverBuilderBase2<Builder>
+{
+ public:
+    //! Builds MPMSolver2.
+    [[nodiscard]] MPMSolver2 Build() const;
+
+    //! Builds shared pointer of MPMSolver2 instance.
+    [[nodiscard]] MPMSolver2Ptr MakeShared() const;
 };
 }  // namespace CubbyFlow
 

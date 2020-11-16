@@ -27,6 +27,24 @@ namespace CubbyFlow
 //!
 class MPMSolver3 : public GridFluidSolver3
 {
+ public:
+    class Builder;
+};
+
+//! Shared pointer type for the MPMSolver3.
+using MPMSolver3Ptr = std::shared_ptr<MPMSolver3>;
+
+//!
+//! \brief Front-end to create MPMSolver3 objects step by step.
+//!
+class MPMSolver3::Builder final : public GridFluidSolverBuilderBase3<Builder>
+{
+ public:
+    //! Builds MPMSolver3.
+    [[nodiscard]] MPMSolver3 Build() const;
+
+    //! Builds shared pointer of MPMSolver3 instance.
+    [[nodiscard]] MPMSolver3Ptr MakeShared() const;
 };
 }  // namespace CubbyFlow
 

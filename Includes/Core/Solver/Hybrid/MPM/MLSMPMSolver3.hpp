@@ -32,6 +32,9 @@ class MLSMPMSolver3 : public MPMSolver3
 {
  public:
     class Builder;
+
+    //! Returns builder for MLSMPMSolver3.
+    [[nodiscard]] static Builder GetBuilder();
 };
 
 //! Shared pointer type for the MLSMPMSolver3.

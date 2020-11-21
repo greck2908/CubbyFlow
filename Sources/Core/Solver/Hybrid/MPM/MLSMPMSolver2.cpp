@@ -12,4 +12,14 @@
 
 namespace CubbyFlow
 {
+MLSMPMSolver2 MLSMPMSolver2::Builder::Build() const
+{
+    return MLSMPMSolver2{};
+}
+
+MLSMPMSolver2Ptr MLSMPMSolver2::Builder::MakeShared() const
+{
+    return std::shared_ptr<MLSMPMSolver2>(
+        new MLSMPMSolver2{}, [](MLSMPMSolver2* obj) { delete obj; });
+}
 }  // namespace CubbyFlow

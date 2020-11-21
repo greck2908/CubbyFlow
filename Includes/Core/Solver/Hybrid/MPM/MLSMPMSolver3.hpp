@@ -30,6 +30,24 @@ namespace CubbyFlow
 //!
 class MLSMPMSolver3 : public MPMSolver3
 {
+ public:
+    class Builder;
+};
+
+//! Shared pointer type for the MLSMPMSolver3.
+using MLSMPMSolver3Ptr = std::shared_ptr<MLSMPMSolver3>;
+
+//!
+//! \brief Front-end to create MLSMPMSolver3 objects step by step.
+//!
+class MLSMPMSolver3::Builder final : public GridFluidSolverBuilderBase3<Builder>
+{
+ public:
+    //! Builds MLSMPMSolver3.
+    [[nodiscard]] MLSMPMSolver3 Build() const;
+
+    //! Builds shared pointer of MLSMPMSolver3 instance.
+    [[nodiscard]] MLSMPMSolver3Ptr MakeShared() const;
 };
 }  // namespace CubbyFlow
 

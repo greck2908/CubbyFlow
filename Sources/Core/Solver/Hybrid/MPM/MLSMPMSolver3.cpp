@@ -12,6 +12,20 @@
 
 namespace CubbyFlow
 {
+MLSMPMSolver3::MLSMPMSolver3()
+    : MLSMPMSolver3{ { 1, 1, 1 }, { 1, 1, 1 }, { 0, 0, 0 } }
+{
+    // Do nothing
+}
+
+MLSMPMSolver3::MLSMPMSolver3(const Size3& resolution,
+                             const Vector3D& gridSpacing,
+                             const Vector3D& gridOrigin)
+    : MPMSolver3{ resolution, gridSpacing, gridOrigin }
+{
+    // Do nothing
+}
+
 MLSMPMSolver3::Builder MLSMPMSolver3::GetBuilder()
 {
     return Builder{};
@@ -19,12 +33,13 @@ MLSMPMSolver3::Builder MLSMPMSolver3::GetBuilder()
 
 MLSMPMSolver3 MLSMPMSolver3::Builder::Build() const
 {
-    return MLSMPMSolver3{};
+    return MLSMPMSolver3{ m_resolution, GetGridSpacing(), m_gridOrigin };
 }
 
 MLSMPMSolver3Ptr MLSMPMSolver3::Builder::MakeShared() const
 {
     return std::shared_ptr<MLSMPMSolver3>(
-        new MLSMPMSolver3{}, [](MLSMPMSolver3* obj) { delete obj; });
+        new MLSMPMSolver3{ m_resolution, GetGridSpacing(), m_gridOrigin },
+        [](MLSMPMSolver3* obj) { delete obj; });
 }
 }  // namespace CubbyFlow

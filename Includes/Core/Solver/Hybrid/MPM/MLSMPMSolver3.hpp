@@ -33,6 +33,28 @@ class MLSMPMSolver3 : public MPMSolver3
  public:
     class Builder;
 
+    //! Default constructor.
+    MLSMPMSolver3();
+
+    //! Constructs solver with initial grid size.
+    MLSMPMSolver3(const Size3& resolution, const Vector3D& gridSpacing,
+                  const Vector3D& gridOrigin);
+
+    //! Deleted copy constructor.
+    MLSMPMSolver3(const MLSMPMSolver3&) = delete;
+
+    //! Deleted move constructor.
+    MLSMPMSolver3(MLSMPMSolver3&&) noexcept = delete;
+
+    //! Default virtual destructor.
+    ~MLSMPMSolver3() override = default;
+
+    //! Deleted copy assignment operator.
+    MLSMPMSolver3& operator=(const MLSMPMSolver3&) = delete;
+
+    //! Deleted move assignment operator.
+    MLSMPMSolver3& operator=(MLSMPMSolver3&&) noexcept = delete;
+
     //! Returns builder for MLSMPMSolver3.
     [[nodiscard]] static Builder GetBuilder();
 };

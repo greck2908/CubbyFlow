@@ -358,6 +358,10 @@ Vector<T, 3> Ceil(const Vector<T, 3>& a);
 template <typename T>
 Vector<T, 3> Floor(const Vector<T, 3>& a);
 
+//! Returns element-wise square rooted vector.
+template <typename T>
+Vector<T, 3> Sqrt(const Vector<T, 3>& a);
+
 //! Float-type 3D vector.
 using Vector3F = Vector3<float>;
 

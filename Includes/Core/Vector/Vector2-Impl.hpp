@@ -595,6 +595,12 @@ Vector<T, 2> Floor(const Vector<T, 2>& a)
 }
 
 template <typename T>
+Vector<T, 2> Sqrt(const Vector<T, 2>& a)
+{
+    return Vector<T, 2>{ std::sqrt(a.x), std::sqrt(a.y) };
+}
+
+template <typename T>
 Vector<T, 2> MonotonicCatmullRom(const Vector<T, 2>& v0, const Vector<T, 2>& v1,
                                  const Vector<T, 2>& v2, const Vector<T, 2>& v3,
                                  T f)

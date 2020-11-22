@@ -21,7 +21,23 @@ MPMSolver2::MPMSolver2(const Size2& resolution, const Vector2D& gridSpacing,
                        const Vector2D& gridOrigin)
     : GridFluidSolver2{ resolution, gridSpacing, gridOrigin }
 {
-    // Do nothing
+    m_particles = std::make_shared<ParticleSystemData2>();
+}
+
+const ParticleSystemData2Ptr& MPMSolver2::GetParticleSystemData() const
+{
+    return m_particles;
+}
+
+const ParticleEmitter2Ptr& MPMSolver2::GetParticleEmitter() const
+{
+    return m_particleEmitter;
+}
+
+void MPMSolver2::SetParticleEmitter(const ParticleEmitter2Ptr& newEmitter)
+{
+    m_particleEmitter = newEmitter;
+    newEmitter->SetTarget(m_particles);
 }
 
 MPMSolver2::Builder MPMSolver2::GetBuilder()

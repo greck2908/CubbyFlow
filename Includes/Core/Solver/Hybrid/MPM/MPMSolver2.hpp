@@ -11,6 +11,7 @@
 #ifndef CUBBYFLOW_MPM_SOLVER2_HPP
 #define CUBBYFLOW_MPM_SOLVER2_HPP
 
+#include <Core/Emitter/ParticleEmitter2.hpp>
 #include <Core/Solver/Grid/GridFluidSolver2.hpp>
 
 namespace CubbyFlow
@@ -27,7 +28,7 @@ namespace CubbyFlow
 //!
 class MPMSolver2 : public GridFluidSolver2
 {
-public:
+ public:
     class Builder;
 
     //! Default constructor.
@@ -52,8 +53,21 @@ public:
     //! Deleted move assignment operator.
     MPMSolver2& operator=(MPMSolver2&&) noexcept = delete;
 
+    //! Returns the particle system data.
+    [[nodiscard]] const ParticleSystemData2Ptr& GetParticleSystemData() const;
+
+    //! Returns the particle emitter.
+    [[nodiscard]] const ParticleEmitter2Ptr& GetParticleEmitter() const;
+
+    //! Sets the particle emitter.
+    void SetParticleEmitter(const ParticleEmitter2Ptr& newEmitter);
+
     //! Returns builder for MPMSolver2.
     [[nodiscard]] static Builder GetBuilder();
+
+ private:
+    ParticleSystemData2Ptr m_particles;
+    ParticleEmitter2Ptr m_particleEmitter;
 };
 
 //! Shared pointer type for the MPMSolver2.

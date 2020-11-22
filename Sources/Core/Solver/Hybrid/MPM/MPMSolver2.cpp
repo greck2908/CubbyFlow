@@ -1,4 +1,4 @@
-// This code is based on Jet framework.
+﻿// This code is based on Jet framework.
 // Copyright (c) 2018 Doyub Kim
 // CubbyFlow is voxel-based fluid simulation engine for computer games.
 // Copyright (c) 2020 CubbyFlow Team
@@ -80,6 +80,33 @@ void MPMSolver2::ComputeAdvection(double timeIntervalInSeconds)
 
 void MPMSolver2::TransferFromParticlesToGrids()
 {
+    ArrayAccessor1<Vector2<double>> positions = m_particles->GetPositions();
+    ArrayAccessor1<Vector2<double>> velocities = m_particles->GetVelocities();
+    const size_t numberOfParticles = m_particles->GetNumberOfParticles();
+
+    const double dx =
+        1.0 / static_cast<double>(GetGridSystemData()->GetResolution().x);
+    const double invDx = 1.0 / dx;
+
+    for (size_t i = 0; i < numberOfParticles; ++i)
+    {
+        // Element-wise floor
+        Vector2D baseCoord =
+            Floor(positions[i].x * invDx - Vector2D{ 0.5, 0.5 });
+        Vector2D fx = positions[i].x * invDx - baseCoord;
+
+        // Quadratic kernels
+        // [http://mpm.graphics Eq. 123, with x=fx,fx-1,fx-2]
+        Vector2D w[3] = {
+            Vector2D{ 0.5, 0.5 } * Sqrt(Vector2D{ 1.5, 1.5 }.Sub(fx)),
+            Vector2D{ 0.75, 0.75 } - Sqrt(fx.Sub(Vector2D{ 1.0, 1.0 })),
+            Vector2D{ 0.5, 0.5 } - Sqrt(fx.Sub(Vector2D{ 0.5, 0.5 }))
+        };
+
+        (void)w;
+    }
+
+    (void)velocities;
 }
 
 void MPMSolver2::TransferFromGridsToParticles()

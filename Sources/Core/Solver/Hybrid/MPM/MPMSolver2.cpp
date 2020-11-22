@@ -9,6 +9,8 @@
 // property of any third parties.
 
 #include <Core/Solver/Hybrid/MPM/MPMSolver2.hpp>
+#include <Core/Utils/Logging.hpp>
+#include <Core/Utils/Timer.hpp>
 
 namespace CubbyFlow
 {
@@ -38,6 +40,25 @@ void MPMSolver2::SetParticleEmitter(const ParticleEmitter2Ptr& newEmitter)
 {
     m_particleEmitter = newEmitter;
     newEmitter->SetTarget(m_particles);
+}
+
+void MPMSolver2::OnInitialize()
+{
+    GridFluidSolver2::OnInitialize();
+
+    const Timer timer;
+    UpdateParticleEmitter(0.0);
+    CUBBYFLOW_INFO << "Update particle emitter took "
+                   << timer.DurationInSeconds() << " seconds";
+}
+
+void MPMSolver2::UpdateParticleEmitter(double timeIntervalInSeconds) const
+{
+    if (m_particleEmitter != nullptr)
+    {
+        m_particleEmitter->Update(GetCurrentTimeInSeconds(),
+                                  timeIntervalInSeconds);
+    }
 }
 
 MPMSolver2::Builder MPMSolver2::GetBuilder()

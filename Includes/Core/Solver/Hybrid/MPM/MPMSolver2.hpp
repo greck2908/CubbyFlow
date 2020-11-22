@@ -65,7 +65,13 @@ class MPMSolver2 : public GridFluidSolver2
     //! Returns builder for MPMSolver2.
     [[nodiscard]] static Builder GetBuilder();
 
+ protected:
+    //! Initializes the simulator.
+    void OnInitialize() override;
+
  private:
+    void UpdateParticleEmitter(double timeIntervalInSeconds) const;
+
     ParticleSystemData2Ptr m_particles;
     ParticleEmitter2Ptr m_particleEmitter;
 };

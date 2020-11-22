@@ -12,6 +12,18 @@
 
 namespace CubbyFlow
 {
+MPMSolver2::MPMSolver2() : MPMSolver2{ { 1, 1 }, { 1, 1 }, { 0, 0 } }
+{
+    // Do nothing
+}
+
+MPMSolver2::MPMSolver2(const Size2& resolution, const Vector2D& gridSpacing,
+                       const Vector2D& gridOrigin)
+    : GridFluidSolver2{ resolution, gridSpacing, gridOrigin }
+{
+    // Do nothing
+}
+
 MPMSolver2::Builder MPMSolver2::GetBuilder()
 {
     return Builder{};
@@ -19,12 +31,13 @@ MPMSolver2::Builder MPMSolver2::GetBuilder()
 
 MPMSolver2 MPMSolver2::Builder::Build() const
 {
-    return MPMSolver2{};
+    return MPMSolver2{ m_resolution, GetGridSpacing(), m_gridOrigin };
 }
 
 MPMSolver2Ptr MPMSolver2::Builder::MakeShared() const
 {
-    return std::shared_ptr<MPMSolver2>(new MPMSolver2{},
-                                       [](MPMSolver2* obj) { delete obj; });
+    return std::shared_ptr<MPMSolver2>(
+        new MPMSolver2{ m_resolution, GetGridSpacing(), m_gridOrigin },
+        [](MPMSolver2* obj) { delete obj; });
 }
 }  // namespace CubbyFlow

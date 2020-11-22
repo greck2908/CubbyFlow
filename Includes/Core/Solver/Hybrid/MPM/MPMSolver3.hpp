@@ -30,6 +30,28 @@ class MPMSolver3 : public GridFluidSolver3
  public:
     class Builder;
 
+    //! Default constructor.
+    MPMSolver3();
+
+    //! Constructs solver with initial grid size.
+    MPMSolver3(const Size3& resolution, const Vector3D& gridSpacing,
+               const Vector3D& gridOrigin);
+
+    //! Deleted copy constructor.
+    MPMSolver3(const MPMSolver3&) = delete;
+
+    //! Deleted move constructor.
+    MPMSolver3(MPMSolver3&&) noexcept = delete;
+
+    //! Default virtual destructor.
+    ~MPMSolver3() override = default;
+
+    //! Deleted copy assignment operator.
+    MPMSolver3& operator=(const MPMSolver3&) = delete;
+
+    //! Deleted move assignment operator.
+    MPMSolver3& operator=(MPMSolver3&&) noexcept = delete;
+
     //! Returns builder for MPMSolver3.
     [[nodiscard]] static Builder GetBuilder();
 };

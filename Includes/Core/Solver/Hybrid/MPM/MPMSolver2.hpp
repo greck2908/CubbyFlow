@@ -69,6 +69,18 @@ class MPMSolver2 : public GridFluidSolver2
     //! Initializes the simulator.
     void OnInitialize() override;
 
+    //! Invoked before a simulation time-step begins.
+    void OnBeginAdvanceTimeStep(double timeIntervalInSeconds) override;
+
+    //! Computes the advection term of the fluid solver.
+    void ComputeAdvection(double timeIntervalInSeconds) override;
+
+    //! Transfers velocity field from particles to grids.
+    virtual void TransferFromParticlesToGrids();
+
+    //! Transfers velocity field from grids to particles.
+    virtual void TransferFromGridsToParticles();
+
  private:
     void UpdateParticleEmitter(double timeIntervalInSeconds) const;
 

@@ -52,6 +52,40 @@ void MPMSolver2::OnInitialize()
                    << timer.DurationInSeconds() << " seconds";
 }
 
+void MPMSolver2::OnBeginAdvanceTimeStep(double timeIntervalInSeconds)
+{
+    Timer timer;
+    UpdateParticleEmitter(timeIntervalInSeconds);
+    CUBBYFLOW_INFO << "Update particle emitter took "
+                   << timer.DurationInSeconds() << " seconds";
+
+    CUBBYFLOW_INFO << "Number of MPM-type particles: "
+                   << m_particles->GetNumberOfParticles();
+
+    timer.Reset();
+    TransferFromParticlesToGrids();
+    CUBBYFLOW_INFO << "TransferFromParticlesToGrids took "
+                   << timer.DurationInSeconds() << " seconds";
+}
+
+void MPMSolver2::ComputeAdvection(double timeIntervalInSeconds)
+{
+    UNUSED_VARIABLE(timeIntervalInSeconds);
+
+    const Timer timer;
+    TransferFromGridsToParticles();
+    CUBBYFLOW_INFO << "TransferFromGridsToParticles took "
+                   << timer.DurationInSeconds() << " seconds";
+}
+
+void MPMSolver2::TransferFromParticlesToGrids()
+{
+}
+
+void MPMSolver2::TransferFromGridsToParticles()
+{
+}
+
 void MPMSolver2::UpdateParticleEmitter(double timeIntervalInSeconds) const
 {
     if (m_particleEmitter != nullptr)

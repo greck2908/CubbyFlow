@@ -391,6 +391,25 @@ void ParticleSystemData3::SerializeParticleSystemData(
         flatbuffers::Vector<flatbuffers::Offset<fbs::VectorParticleData3>>>
         fbsVectorDataList = builder->CreateVector(vectorDataList);
 
+    std::vector<flatbuffers::Offset<fbs::MatrixParticleData3>> matrixDataList;
+    for (const auto& matrixData : m_matrixDataList)
+    {
+        std::vector<fbs::Matrix3x3D> newMatrixData;
+        for (const auto& m : matrixData)
+        {
+            newMatrixData.push_back(CubbyFlowToFlatbuffers(m));
+        }
+
+        flatbuffers::Offset<fbs::MatrixParticleData3> fbsMatrixData =
+            CreateMatrixParticleData3(
+                *builder, builder->CreateVectorOfStructs(newMatrixData.data(),
+                                                         newMatrixData.size()));
+        matrixDataList.push_back(fbsMatrixData);
+    }
+    const flatbuffers::Offset<
+        flatbuffers::Vector<flatbuffers::Offset<fbs::MatrixParticleData3>>>
+        fbsMatrixDataList = builder->CreateVector(matrixDataList);
+
     // Copy neighbor searcher
     const flatbuffers::Offset<flatbuffers::String> neighborSearcherType =
         builder->CreateString(m_neighborSearcher->TypeName());
@@ -421,8 +440,8 @@ void ParticleSystemData3::SerializeParticleSystemData(
     // Copy the searcher
     *fbsParticleSystemData = fbs::CreateParticleSystemData3(
         *builder, m_radius, m_mass, m_positionIdx, m_velocityIdx, m_forceIdx,
-        fbsScalarDataList, fbsVectorDataList, fbsNeighborSearcher,
-        fbsNeighborLists);
+        fbsScalarDataList, fbsVectorDataList, fbsMatrixDataList,
+        fbsNeighborSearcher, fbsNeighborLists);
 }
 
 void ParticleSystemData3::DeserializeParticleSystemData(
@@ -466,6 +485,23 @@ void ParticleSystemData3::DeserializeParticleSystemData(
         m_vectorDataList.emplace_back(data->size());
 
         Array<Vector<double, 3>, 1>& newData = *(m_vectorDataList.rbegin());
+
+        for (uint32_t i = 0; i < data->size(); ++i)
+        {
+            newData[i] = FlatbuffersToCubbyFlow(*data->Get(i));
+        }
+    }
+
+    const flatbuffers::Vector<flatbuffers::Offset<fbs::MatrixParticleData3>>*
+        fbsMatrixDataList = fbsParticleSystemData->matrixDataList();
+    for (const auto fbsMatrixData : (*fbsMatrixDataList))
+    {
+        const flatbuffers::Vector<const fbs::Matrix3x3D*>* data =
+            fbsMatrixData->data();
+
+        m_matrixDataList.emplace_back(data->size());
+
+        Array<Matrix<double, 3, 3>, 1>& newData = *(m_matrixDataList.rbegin());
 
         for (uint32_t i = 0; i < data->size(); ++i)
         {

@@ -15,6 +15,8 @@ struct ScalarParticleData2;
 
 struct VectorParticleData2;
 
+struct MatrixParticleData2;
+
 struct PointNeighborSearcherSerialized2;
 
 struct ParticleNeighborList2;
@@ -117,6 +119,55 @@ inline flatbuffers::Offset<VectorParticleData2> CreateVectorParticleData2Direct(
   return CubbyFlow::fbs::CreateVectorParticleData2(
       _fbb,
       data ? _fbb.CreateVector<const CubbyFlow::fbs::Vector2D *>(*data) : 0);
+}
+
+struct MatrixParticleData2 FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  enum {
+    VT_DATA = 4
+  };
+  const flatbuffers::Vector<const CubbyFlow::fbs::Matrix2x2D *> *data() const {
+    return GetPointer<const flatbuffers::Vector<const CubbyFlow::fbs::Matrix2x2D *> *>(VT_DATA);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_DATA) &&
+           verifier.Verify(data()) &&
+           verifier.EndTable();
+  }
+};
+
+struct MatrixParticleData2Builder {
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_data(flatbuffers::Offset<flatbuffers::Vector<const CubbyFlow::fbs::Matrix2x2D *>> data) {
+    fbb_.AddOffset(MatrixParticleData2::VT_DATA, data);
+  }
+  MatrixParticleData2Builder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  MatrixParticleData2Builder &operator=(const MatrixParticleData2Builder &);
+  flatbuffers::Offset<MatrixParticleData2> Finish() {
+    const auto end = fbb_.EndTable(start_, 1);
+    auto o = flatbuffers::Offset<MatrixParticleData2>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<MatrixParticleData2> CreateMatrixParticleData2(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<const CubbyFlow::fbs::Matrix2x2D *>> data = 0) {
+  MatrixParticleData2Builder builder_(_fbb);
+  builder_.add_data(data);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<MatrixParticleData2> CreateMatrixParticleData2Direct(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<const CubbyFlow::fbs::Matrix2x2D *> *data = nullptr) {
+  return CubbyFlow::fbs::CreateMatrixParticleData2(
+      _fbb,
+      data ? _fbb.CreateVector<const CubbyFlow::fbs::Matrix2x2D *>(*data) : 0);
 }
 
 struct PointNeighborSearcherSerialized2 FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -239,8 +290,9 @@ struct ParticleSystemData2 FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
     VT_FORCEIDX = 12,
     VT_SCALARDATALIST = 14,
     VT_VECTORDATALIST = 16,
-    VT_NEIGHBORSEARCHER = 18,
-    VT_NEIGHBORLISTS = 20
+    VT_MATRIXDATALIST = 18,
+    VT_NEIGHBORSEARCHER = 20,
+    VT_NEIGHBORLISTS = 22
   };
   double radius() const {
     return GetField<double>(VT_RADIUS, 0.0);
@@ -263,6 +315,9 @@ struct ParticleSystemData2 FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
   const flatbuffers::Vector<flatbuffers::Offset<VectorParticleData2>> *vectorDataList() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<VectorParticleData2>> *>(VT_VECTORDATALIST);
   }
+  const flatbuffers::Vector<flatbuffers::Offset<MatrixParticleData2>> *matrixDataList() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<MatrixParticleData2>> *>(VT_MATRIXDATALIST);
+  }
   const PointNeighborSearcherSerialized2 *neighborSearcher() const {
     return GetPointer<const PointNeighborSearcherSerialized2 *>(VT_NEIGHBORSEARCHER);
   }
@@ -282,6 +337,9 @@ struct ParticleSystemData2 FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table 
            VerifyOffset(verifier, VT_VECTORDATALIST) &&
            verifier.Verify(vectorDataList()) &&
            verifier.VerifyVectorOfTables(vectorDataList()) &&
+           VerifyOffset(verifier, VT_MATRIXDATALIST) &&
+           verifier.Verify(matrixDataList()) &&
+           verifier.VerifyVectorOfTables(matrixDataList()) &&
            VerifyOffset(verifier, VT_NEIGHBORSEARCHER) &&
            verifier.VerifyTable(neighborSearcher()) &&
            VerifyOffset(verifier, VT_NEIGHBORLISTS) &&
@@ -315,6 +373,9 @@ struct ParticleSystemData2Builder {
   void add_vectorDataList(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<VectorParticleData2>>> vectorDataList) {
     fbb_.AddOffset(ParticleSystemData2::VT_VECTORDATALIST, vectorDataList);
   }
+  void add_matrixDataList(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<MatrixParticleData2>>> matrixDataList) {
+    fbb_.AddOffset(ParticleSystemData2::VT_MATRIXDATALIST, matrixDataList);
+  }
   void add_neighborSearcher(flatbuffers::Offset<PointNeighborSearcherSerialized2> neighborSearcher) {
     fbb_.AddOffset(ParticleSystemData2::VT_NEIGHBORSEARCHER, neighborSearcher);
   }
@@ -327,7 +388,7 @@ struct ParticleSystemData2Builder {
   }
   ParticleSystemData2Builder &operator=(const ParticleSystemData2Builder &);
   flatbuffers::Offset<ParticleSystemData2> Finish() {
-    const auto end = fbb_.EndTable(start_, 9);
+    const auto end = fbb_.EndTable(start_, 10);
     auto o = flatbuffers::Offset<ParticleSystemData2>(end);
     return o;
   }
@@ -342,6 +403,7 @@ inline flatbuffers::Offset<ParticleSystemData2> CreateParticleSystemData2(
     uint64_t forceIdx = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<ScalarParticleData2>>> scalarDataList = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<VectorParticleData2>>> vectorDataList = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<MatrixParticleData2>>> matrixDataList = 0,
     flatbuffers::Offset<PointNeighborSearcherSerialized2> neighborSearcher = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<ParticleNeighborList2>>> neighborLists = 0) {
   ParticleSystemData2Builder builder_(_fbb);
@@ -352,6 +414,7 @@ inline flatbuffers::Offset<ParticleSystemData2> CreateParticleSystemData2(
   builder_.add_radius(radius);
   builder_.add_neighborLists(neighborLists);
   builder_.add_neighborSearcher(neighborSearcher);
+  builder_.add_matrixDataList(matrixDataList);
   builder_.add_vectorDataList(vectorDataList);
   builder_.add_scalarDataList(scalarDataList);
   return builder_.Finish();
@@ -366,6 +429,7 @@ inline flatbuffers::Offset<ParticleSystemData2> CreateParticleSystemData2Direct(
     uint64_t forceIdx = 0,
     const std::vector<flatbuffers::Offset<ScalarParticleData2>> *scalarDataList = nullptr,
     const std::vector<flatbuffers::Offset<VectorParticleData2>> *vectorDataList = nullptr,
+    const std::vector<flatbuffers::Offset<MatrixParticleData2>> *matrixDataList = nullptr,
     flatbuffers::Offset<PointNeighborSearcherSerialized2> neighborSearcher = 0,
     const std::vector<flatbuffers::Offset<ParticleNeighborList2>> *neighborLists = nullptr) {
   return CubbyFlow::fbs::CreateParticleSystemData2(
@@ -377,6 +441,7 @@ inline flatbuffers::Offset<ParticleSystemData2> CreateParticleSystemData2Direct(
       forceIdx,
       scalarDataList ? _fbb.CreateVector<flatbuffers::Offset<ScalarParticleData2>>(*scalarDataList) : 0,
       vectorDataList ? _fbb.CreateVector<flatbuffers::Offset<VectorParticleData2>>(*vectorDataList) : 0,
+      matrixDataList ? _fbb.CreateVector<flatbuffers::Offset<MatrixParticleData2>>(*matrixDataList) : 0,
       neighborSearcher,
       neighborLists ? _fbb.CreateVector<flatbuffers::Offset<ParticleNeighborList2>>(*neighborLists) : 0);
 }

@@ -17,6 +17,10 @@ struct Vector2D;
 
 struct Vector3D;
 
+struct Matrix2x2D;
+
+struct Matrix3x3D;
+
 MANUALLY_ALIGNED_STRUCT(8) Size2 FLATBUFFERS_FINAL_CLASS {
  private:
   uint64_t x_;
@@ -126,6 +130,101 @@ MANUALLY_ALIGNED_STRUCT(8) Vector3D FLATBUFFERS_FINAL_CLASS {
   }
 };
 STRUCT_END(Vector3D, 24);
+
+MANUALLY_ALIGNED_STRUCT(8) Matrix2x2D FLATBUFFERS_FINAL_CLASS {
+ private:
+  double data0_;
+  double data1_;
+  double data2_;
+  double data3_;
+
+ public:
+  Matrix2x2D() {
+    memset(this, 0, sizeof(Matrix2x2D));
+  }
+  Matrix2x2D(const Matrix2x2D &_o) {
+    memcpy(this, &_o, sizeof(Matrix2x2D));
+  }
+  Matrix2x2D(double _data0, double _data1, double _data2, double _data3)
+      : data0_(flatbuffers::EndianScalar(_data0)),
+        data1_(flatbuffers::EndianScalar(_data1)),
+        data2_(flatbuffers::EndianScalar(_data2)),
+        data3_(flatbuffers::EndianScalar(_data3)) {
+  }
+  double data0() const {
+    return flatbuffers::EndianScalar(data0_);
+  }
+  double data1() const {
+    return flatbuffers::EndianScalar(data1_);
+  }
+  double data2() const {
+    return flatbuffers::EndianScalar(data2_);
+  }
+  double data3() const {
+    return flatbuffers::EndianScalar(data3_);
+  }
+};
+STRUCT_END(Matrix2x2D, 32);
+
+MANUALLY_ALIGNED_STRUCT(8) Matrix3x3D FLATBUFFERS_FINAL_CLASS {
+ private:
+  double data0_;
+  double data1_;
+  double data2_;
+  double data3_;
+  double data4_;
+  double data5_;
+  double data6_;
+  double data7_;
+  double data8_;
+
+ public:
+  Matrix3x3D() {
+    memset(this, 0, sizeof(Matrix3x3D));
+  }
+  Matrix3x3D(const Matrix3x3D &_o) {
+    memcpy(this, &_o, sizeof(Matrix3x3D));
+  }
+  Matrix3x3D(double _data0, double _data1, double _data2, double _data3, double _data4, double _data5, double _data6, double _data7, double _data8)
+      : data0_(flatbuffers::EndianScalar(_data0)),
+        data1_(flatbuffers::EndianScalar(_data1)),
+        data2_(flatbuffers::EndianScalar(_data2)),
+        data3_(flatbuffers::EndianScalar(_data3)),
+        data4_(flatbuffers::EndianScalar(_data4)),
+        data5_(flatbuffers::EndianScalar(_data5)),
+        data6_(flatbuffers::EndianScalar(_data6)),
+        data7_(flatbuffers::EndianScalar(_data7)),
+        data8_(flatbuffers::EndianScalar(_data8)) {
+  }
+  double data0() const {
+    return flatbuffers::EndianScalar(data0_);
+  }
+  double data1() const {
+    return flatbuffers::EndianScalar(data1_);
+  }
+  double data2() const {
+    return flatbuffers::EndianScalar(data2_);
+  }
+  double data3() const {
+    return flatbuffers::EndianScalar(data3_);
+  }
+  double data4() const {
+    return flatbuffers::EndianScalar(data4_);
+  }
+  double data5() const {
+    return flatbuffers::EndianScalar(data5_);
+  }
+  double data6() const {
+    return flatbuffers::EndianScalar(data6_);
+  }
+  double data7() const {
+    return flatbuffers::EndianScalar(data7_);
+  }
+  double data8() const {
+    return flatbuffers::EndianScalar(data8_);
+  }
+};
+STRUCT_END(Matrix3x3D, 72);
 
 }  // namespace fbs
 }  // namespace CubbyFlow

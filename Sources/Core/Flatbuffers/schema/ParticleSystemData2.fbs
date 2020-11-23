@@ -12,6 +12,11 @@ table VectorParticleData2
     data:[Vector2D];
 }
 
+table MatrixParticleData2
+{
+    data:[Matrix2x2D];
+}
+
 table PointNeighborSearcherSerialized2
 {
     type:string;
@@ -32,6 +37,7 @@ table ParticleSystemData2
     forceIdx:ulong;
     scalarDataList:[ScalarParticleData2];
     vectorDataList:[VectorParticleData2];
+    matrixDataList:[MatrixParticleData2];
     neighborSearcher:PointNeighborSearcherSerialized2;
     neighborLists:[ParticleNeighborList2];
 }

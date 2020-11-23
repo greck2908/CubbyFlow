@@ -12,6 +12,11 @@ table VectorParticleData3
     data:[Vector3D];
 }
 
+table MatrixParticleData3
+{
+    data:[Matrix3x3D];
+}
+
 table PointNeighborSearcherSerialized3
 {
     type:string;
@@ -32,6 +37,7 @@ table ParticleSystemData3
     forceIdx:ulong;
     scalarDataList:[ScalarParticleData3];
     vectorDataList:[VectorParticleData3];
+    matrixDataList:[MatrixParticleData3];
     neighborSearcher:PointNeighborSearcherSerialized3;
     neighborLists:[ParticleNeighborList3];
 }

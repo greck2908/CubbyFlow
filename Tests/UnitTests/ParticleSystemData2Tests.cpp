@@ -219,6 +219,7 @@ TEST(ParticleSystemData2, Serialization)
     size_t a0 = particleSystem.AddScalarData(2.0);
     size_t a1 = particleSystem.AddScalarData(9.0);
     size_t a2 = particleSystem.AddVectorData({ 1.0, -3.0 });
+    size_t a3 = particleSystem.AddMatrixData({ 2.0, -5.0, -1.0, 3.0 });
 
     const double radius = 0.4;
     particleSystem.BuildNeighborSearcher(radius);
@@ -248,6 +249,15 @@ TEST(ParticleSystemData2, Serialization)
     {
         EXPECT_DOUBLE_EQ(1.0, as2[i].x);
         EXPECT_DOUBLE_EQ(-3.0, as2[i].y);
+    }
+
+    auto as3 = particleSystem2.MatrixDataAt(a3);
+    for (size_t i = 0; i < positions.size(); ++i)
+    {
+        EXPECT_DOUBLE_EQ(2.0, as3[i][0]);
+        EXPECT_DOUBLE_EQ(-5.0, as3[i][1]);
+        EXPECT_DOUBLE_EQ(-1.0, as3[i][2]);
+        EXPECT_DOUBLE_EQ(3.0, as3[i][3]);
     }
 
     const auto& neighborLists = particleSystem.GetNeighborLists();

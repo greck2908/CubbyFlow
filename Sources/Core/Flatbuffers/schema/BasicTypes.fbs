@@ -25,3 +25,24 @@ struct Vector3D
     y:double = 0.0;
     z:double = 0.0;
 }
+
+struct Matrix2x2D
+{
+    data0:double = 0.0;
+    data1:double = 0.0;
+    data2:double = 0.0;
+    data3:double = 0.0;
+}
+
+struct Matrix3x3D
+{
+    data0:double = 0.0;
+    data1:double = 0.0;
+    data2:double = 0.0;
+    data3:double = 0.0;
+    data4:double = 0.0;
+    data5:double = 0.0;
+    data6:double = 0.0;
+    data7:double = 0.0;
+    data8:double = 0.0;
+}

@@ -68,6 +68,11 @@ void ParticleSystemData3::Resize(size_t newNumberOfParticles)
     {
         attr.Resize(newNumberOfParticles, Vector3D{});
     }
+
+    for (auto& attr : m_matrixDataList)
+    {
+        attr.Resize(newNumberOfParticles, Matrix3x3D{});
+    }
 }
 
 size_t ParticleSystemData3::GetNumberOfParticles() const
@@ -86,6 +91,13 @@ size_t ParticleSystemData3::AddVectorData(const Vector3D& initialVal)
 {
     const size_t attrIdx = m_vectorDataList.size();
     m_vectorDataList.emplace_back(GetNumberOfParticles(), initialVal);
+    return attrIdx;
+}
+
+size_t ParticleSystemData3::AddMatrixData(const Matrix3x3D& initialVal)
+{
+    const size_t attrIdx = m_matrixDataList.size();
+    m_matrixDataList.emplace_back(GetNumberOfParticles(), initialVal);
     return attrIdx;
 }
 
@@ -158,6 +170,17 @@ ConstArrayAccessor1<Vector3D> ParticleSystemData3::VectorDataAt(
 ArrayAccessor1<Vector3D> ParticleSystemData3::VectorDataAt(size_t idx)
 {
     return m_vectorDataList[idx].Accessor();
+}
+
+ConstArrayAccessor1<Matrix3x3D> ParticleSystemData3::MatrixDataAt(
+    size_t idx) const
+{
+    return m_matrixDataList[idx].ConstAccessor();
+}
+
+ArrayAccessor1<Matrix3x3D> ParticleSystemData3::MatrixDataAt(size_t idx)
+{
+    return m_matrixDataList[idx].Accessor();
 }
 
 void ParticleSystemData3::AddParticle(const Vector3D& newPosition,
@@ -322,6 +345,11 @@ void ParticleSystemData3::Set(const ParticleSystemData3& other)
         m_vectorDataList.emplace_back(attr);
     }
 
+    for (const auto& attr : other.m_matrixDataList)
+    {
+        m_matrixDataList.emplace_back(attr);
+    }
+
     m_neighborSearcher = other.m_neighborSearcher->Clone();
     m_neighborLists = other.m_neighborLists;
 }
@@ -402,6 +430,7 @@ void ParticleSystemData3::DeserializeParticleSystemData(
 {
     m_scalarDataList.clear();
     m_vectorDataList.clear();
+    m_matrixDataList.clear();
 
     // Copy scalars
     m_radius = fbsParticleSystemData->radius();

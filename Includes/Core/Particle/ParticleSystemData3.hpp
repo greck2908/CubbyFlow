@@ -12,6 +12,7 @@
 #define CUBBYFLOW_PARTICLE_SYSTEM_DATA3_HPP
 
 #include <Core/Array/Array1.hpp>
+#include <Core/Matrix/Matrix3x3.hpp>
 #include <Core/Searcher/PointNeighborSearcher3.hpp>
 #include <Core/Utils/Serialization.hpp>
 #include <Core/Vector/Vector3.hpp>
@@ -55,6 +56,9 @@ class ParticleSystemData3 : public Serializable
 
     //! Vector data chunk.
     using VectorData = Array1<Vector3D>;
+
+    //! Matrix data chunk.
+    using MatrixData = Array1<Matrix3x3D>;
 
     //! Default constructor.
     ParticleSystemData3();
@@ -113,6 +117,17 @@ class ParticleSystemData3 : public Serializable
     //!
     size_t AddVectorData(const Vector3D& initialVal = Vector3D());
 
+    //!
+    //! \brief      Adds a matrix data layer and returns its index.
+    //!
+    //! This function adds a new matrix data layer to the system. It can be used
+    //! for adding a matrix attribute, such as deformation gradient,
+    //! to the particles.
+    //!
+    //! \param[in] initialVal  Initial value of the new vector data.
+    //!
+    size_t AddMatrixData(const Matrix3x3D& initialVal = Matrix3x3D());
+
     //! Returns the radius of the particles.
     double GetRadius() const;
 
@@ -154,6 +169,12 @@ class ParticleSystemData3 : public Serializable
 
     //! Returns custom vector data layer at given index (mutable).
     ArrayAccessor1<Vector3D> VectorDataAt(size_t idx);
+
+    //! Returns custom matrix data layer at given index (immutable).
+    ConstArrayAccessor1<Matrix3x3D> MatrixDataAt(size_t idx) const;
+
+    //! Returns custom matrix data layer at given index (mutable).
+    ArrayAccessor1<Matrix3x3D> MatrixDataAt(size_t idx);
 
     //!
     //! \brief      Adds a particle to the data structure.
@@ -251,6 +272,7 @@ class ParticleSystemData3 : public Serializable
 
     std::vector<ScalarData> m_scalarDataList;
     std::vector<VectorData> m_vectorDataList;
+    std::vector<MatrixData> m_matrixDataList;
 
     PointNeighborSearcher3Ptr m_neighborSearcher;
     std::vector<std::vector<size_t>> m_neighborLists;

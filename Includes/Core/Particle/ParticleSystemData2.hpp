@@ -12,6 +12,7 @@
 #define CUBBYFLOW_PARTICLE_SYSTEM_DATA2_HPP
 
 #include <Core/Array/Array1.hpp>
+#include <Core/Matrix/Matrix2x2.hpp>
 #include <Core/Searcher/PointNeighborSearcher2.hpp>
 #include <Core/Utils/Serialization.hpp>
 #include <Core/Vector/Vector2.hpp>
@@ -55,6 +56,9 @@ class ParticleSystemData2 : public Serializable
 
     //! Vector data chunk.
     using VectorData = Array1<Vector2D>;
+
+    //! Matrix data chunk.
+    using MatrixData = Array1<Matrix2x2D>;
 
     //! Default constructor.
     ParticleSystemData2();
@@ -113,6 +117,18 @@ class ParticleSystemData2 : public Serializable
     //!
     [[nodiscard]] size_t AddVectorData(const Vector2D& initialVal = Vector2D());
 
+    //!
+    //! \brief      Adds a matrix data layer and returns its index.
+    //!
+    //! This function adds a new matrix data layer to the system. It can be used
+    //! for adding a matrix attribute, such as deformation gradient,
+    //! to the particles.
+    //!
+    //! \param[in] initialVal  Initial value of the new vector data.
+    //!
+    [[nodiscard]] size_t AddMatrixData(
+        const Matrix2x2D& initialVal = Matrix2x2D());
+
     //! Returns the radius of the particles.
     [[nodiscard]] double GetRadius() const;
 
@@ -154,6 +170,13 @@ class ParticleSystemData2 : public Serializable
 
     //! Returns custom vector data layer at given index (mutable).
     [[nodiscard]] ArrayAccessor1<Vector2D> VectorDataAt(size_t idx);
+
+    //! Returns custom matrix data layer at given index (immutable).
+    [[nodiscard]] ConstArrayAccessor1<Matrix2x2D> MatrixDataAt(
+        size_t idx) const;
+
+    //! Returns custom matrix data layer at given index (mutable).
+    [[nodiscard]] ArrayAccessor1<Matrix2x2D> MatrixDataAt(size_t idx);
 
     //!
     //! \brief      Adds a particle to the data structure.
@@ -252,6 +275,7 @@ class ParticleSystemData2 : public Serializable
 
     std::vector<ScalarData> m_scalarDataList;
     std::vector<VectorData> m_vectorDataList;
+    std::vector<MatrixData> m_matrixDataList;
 
     PointNeighborSearcher2Ptr m_neighborSearcher;
     std::vector<std::vector<size_t>> m_neighborLists;

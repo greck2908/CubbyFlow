@@ -13,6 +13,8 @@
 
 #include <Core/Geometry/Size2.hpp>
 #include <Core/Geometry/Size3.hpp>
+#include <Core/Matrix/Matrix2x2.hpp>
+#include <Core/Matrix/Matrix3x3.hpp>
 #include <Core/Vector/Vector2.hpp>
 #include <Core/Vector/Vector3.hpp>
 
@@ -40,6 +42,17 @@ inline fbs::Vector3D CubbyFlowToFlatbuffers(const Vector3D& vec)
     return fbs::Vector3D(vec.x, vec.y, vec.z);
 }
 
+inline fbs::Matrix2x2D CubbyFlowToFlatbuffers(const Matrix2x2D& mat)
+{
+    return fbs::Matrix2x2D(mat[0], mat[1], mat[2], mat[3]);
+}
+
+inline fbs::Matrix3x3D CubbyFlowToFlatbuffers(const Matrix3x3D& mat)
+{
+    return fbs::Matrix3x3D(mat[0], mat[1], mat[2], mat[3], mat[4], mat[5],
+                           mat[6], mat[7], mat[8]);
+}
+
 inline Size2 FlatbuffersToCubbyFlow(const fbs::Size2& vec)
 {
     return Size2{ { vec.x(), vec.y() } };
@@ -58,6 +71,18 @@ inline Vector2D FlatbuffersToCubbyFlow(const fbs::Vector2D& vec)
 inline Vector3D FlatbuffersToCubbyFlow(const fbs::Vector3D& vec)
 {
     return Vector3D{ vec.x(), vec.y(), vec.z() };
+}
+
+inline Matrix2x2D FlatbuffersToCubbyFlow(const fbs::Matrix2x2D& mat)
+{
+    return Matrix2x2D{ mat.data0(), mat.data1(), mat.data2(), mat.data3() };
+}
+
+inline Matrix3x3D FlatbuffersToCubbyFlow(const fbs::Matrix3x3D& mat)
+{
+    return Matrix3x3D{ mat.data0(), mat.data1(), mat.data2(),
+                       mat.data3(), mat.data4(), mat.data5(),
+                       mat.data6(), mat.data7(), mat.data8() };
 }
 
 template <typename GridType, typename FbsFactoryFunc, typename FbsGridType>

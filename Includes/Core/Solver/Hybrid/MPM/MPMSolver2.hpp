@@ -59,6 +59,12 @@ class MPMSolver2 : public GridFluidSolver2
     //! Sets the snow hardening factor.
     void SetSnowHardeningFactor(double newFactor);
 
+    //! Returns the Young's modulus.
+    [[nodiscard]] double GetYoungsModulus() const;
+
+    //! Sets the Young's modulus.
+    void SetYoungsModulus(double newModulus);
+
     //! Returns the determinant of the deformation gradient of particles.
     [[nodiscard]] ArrayAccessor1<double> GetDetDeformationGradient() const;
 
@@ -98,6 +104,7 @@ class MPMSolver2 : public GridFluidSolver2
 
     std::size_t m_detDeformationGradientID;
     double m_snowHardeningFactor = 10.0;
+    double m_youngsModulus = 1.0e-4;
 };
 
 //! Shared pointer type for the MPMSolver2.

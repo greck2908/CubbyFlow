@@ -37,6 +37,16 @@ void MPMSolver2::SetSnowHardeningFactor(double newFactor)
     m_snowHardeningFactor = newFactor;
 }
 
+double MPMSolver2::GetYoungsModulus() const
+{
+    return m_youngsModulus;
+}
+
+void MPMSolver2::SetYoungsModulus(double newModulus)
+{
+    m_youngsModulus = newModulus;
+}
+
 ArrayAccessor1<double> MPMSolver2::GetDetDeformationGradient() const
 {
     return m_particles->ScalarDataAt(m_detDeformationGradientID);

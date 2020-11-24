@@ -53,6 +53,12 @@ class MPMSolver2 : public GridFluidSolver2
     //! Deleted move assignment operator.
     MPMSolver2& operator=(MPMSolver2&&) noexcept = delete;
 
+    //! Returns the snow hardening factor.
+    [[nodiscard]] double GetSnowHardeningFactor() const;
+
+    //! Sets the snow hardening factor.
+    void SetSnowHardeningFactor(double newFactor);
+
     //! Returns the particle system data.
     [[nodiscard]] const ParticleSystemData2Ptr& GetParticleSystemData() const;
 
@@ -86,6 +92,8 @@ class MPMSolver2 : public GridFluidSolver2
 
     ParticleSystemData2Ptr m_particles;
     ParticleEmitter2Ptr m_particleEmitter;
+
+    double m_snowHardeningFactor = 10.0;
 };
 
 //! Shared pointer type for the MPMSolver2.

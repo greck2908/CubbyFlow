@@ -26,6 +26,16 @@ MPMSolver2::MPMSolver2(const Size2& resolution, const Vector2D& gridSpacing,
     m_particles = std::make_shared<ParticleSystemData2>();
 }
 
+double MPMSolver2::GetSnowHardeningFactor() const
+{
+    return m_snowHardeningFactor;
+}
+
+void MPMSolver2::SetSnowHardeningFactor(double newFactor)
+{
+    m_snowHardeningFactor = newFactor;
+}
+
 const ParticleSystemData2Ptr& MPMSolver2::GetParticleSystemData() const
 {
     return m_particles;

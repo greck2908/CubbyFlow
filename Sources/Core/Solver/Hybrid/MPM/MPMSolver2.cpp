@@ -24,6 +24,7 @@ MPMSolver2::MPMSolver2(const Size2& resolution, const Vector2D& gridSpacing,
     : GridFluidSolver2{ resolution, gridSpacing, gridOrigin }
 {
     m_particles = std::make_shared<ParticleSystemData2>();
+    m_detDeformationGradientID = m_particles->AddScalarData(1.0);
 }
 
 double MPMSolver2::GetSnowHardeningFactor() const
@@ -34,6 +35,11 @@ double MPMSolver2::GetSnowHardeningFactor() const
 void MPMSolver2::SetSnowHardeningFactor(double newFactor)
 {
     m_snowHardeningFactor = newFactor;
+}
+
+ArrayAccessor1<double> MPMSolver2::GetDetDeformationGradient() const
+{
+    return m_particles->ScalarDataAt(m_detDeformationGradientID);
 }
 
 const ParticleSystemData2Ptr& MPMSolver2::GetParticleSystemData() const
@@ -92,6 +98,8 @@ void MPMSolver2::TransferFromParticlesToGrids()
 {
     ArrayAccessor1<Vector2<double>> positions = m_particles->GetPositions();
     ArrayAccessor1<Vector2<double>> velocities = m_particles->GetVelocities();
+    ArrayAccessor1<double> detDeformationGradients =
+        GetDetDeformationGradient();
     const size_t numberOfParticles = m_particles->GetNumberOfParticles();
 
     const double dx =
@@ -113,7 +121,13 @@ void MPMSolver2::TransferFromParticlesToGrids()
             Vector2D{ 0.5, 0.5 } - Sqrt(fx.Sub(Vector2D{ 0.5, 0.5 }))
         };
 
+        // Compute current Lamé parameters
+        // [http://mpm.graphics Eqn. 86]
+        double e = std::exp(m_snowHardeningFactor *
+                            (1.0 - detDeformationGradients[i]));
+
         (void)w;
+        (void)e;
     }
 
     (void)velocities;

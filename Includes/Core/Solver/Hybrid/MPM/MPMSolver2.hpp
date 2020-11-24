@@ -59,6 +59,9 @@ class MPMSolver2 : public GridFluidSolver2
     //! Sets the snow hardening factor.
     void SetSnowHardeningFactor(double newFactor);
 
+    //! Returns the determinant of the deformation gradient of particles.
+    [[nodiscard]] ArrayAccessor1<double> GetDetDeformationGradient() const;
+
     //! Returns the particle system data.
     [[nodiscard]] const ParticleSystemData2Ptr& GetParticleSystemData() const;
 
@@ -93,6 +96,7 @@ class MPMSolver2 : public GridFluidSolver2
     ParticleSystemData2Ptr m_particles;
     ParticleEmitter2Ptr m_particleEmitter;
 
+    std::size_t m_detDeformationGradientID;
     double m_snowHardeningFactor = 10.0;
 };
 

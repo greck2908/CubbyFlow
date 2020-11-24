@@ -65,6 +65,12 @@ class MPMSolver2 : public GridFluidSolver2
     //! Sets the Young's modulus.
     void SetYoungsModulus(double newModulus);
 
+    //! Returns the Poisson ratio.
+    [[nodiscard]] double GetPoissonRatio() const;
+
+    //! Sets the Poisson ratio.
+    void SetPoissonRatio(double newRatio);
+
     //! Returns the determinant of the deformation gradient of particles.
     [[nodiscard]] ArrayAccessor1<double> GetDetDeformationGradient() const;
 
@@ -105,6 +111,7 @@ class MPMSolver2 : public GridFluidSolver2
     std::size_t m_detDeformationGradientID;
     double m_snowHardeningFactor = 10.0;
     double m_youngsModulus = 1.0e-4;
+    double m_poissonRatio = 0.2;
 };
 
 //! Shared pointer type for the MPMSolver2.

@@ -47,6 +47,16 @@ void MPMSolver2::SetYoungsModulus(double newModulus)
     m_youngsModulus = newModulus;
 }
 
+double MPMSolver2::GetPoissonRatio() const
+{
+    return m_poissonRatio;
+}
+
+void MPMSolver2::SetPoissonRatio(double newRatio)
+{
+    m_poissonRatio = newRatio;
+}
+
 ArrayAccessor1<double> MPMSolver2::GetDetDeformationGradient() const
 {
     return m_particles->ScalarDataAt(m_detDeformationGradientID);

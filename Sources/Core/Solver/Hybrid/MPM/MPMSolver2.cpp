@@ -8,6 +8,7 @@
 // personal capacity and are not conveying any rights to any intellectual
 // property of any third parties.
 
+#include <Core/Math/PolarDecomposition.hpp>
 #include <Core/Solver/Hybrid/MPM/MPMSolver2.hpp>
 #include <Core/Utils/Logging.hpp>
 #include <Core/Utils/Timer.hpp>
@@ -124,6 +125,7 @@ void MPMSolver2::TransferFromParticlesToGrids()
 {
     ArrayAccessor1<Vector2<double>> positions = m_particles->GetPositions();
     ArrayAccessor1<Vector2<double>> velocities = m_particles->GetVelocities();
+    ArrayAccessor1<Matrix2x2D> deformationGradients = GetDeformationGradient();
     ArrayAccessor1<double> detDeformationGradients =
         GetDetDeformationGradient();
     const size_t numberOfParticles = m_particles->GetNumberOfParticles();
@@ -160,6 +162,14 @@ void MPMSolver2::TransferFromParticlesToGrids()
         double mu = mu_0 * e;
         double lambda = lambda_0 * e;
 
+        // Current volume
+        double j = deformationGradients[i].Determinant();
+
+        // Polar decomposition for fixed corotated model
+        Matrix2x2D r, s;
+        PolarDecomposition(deformationGradients[i], r, s);
+
+        (void)j;
         (void)mu;
         (void)lambda;
     }

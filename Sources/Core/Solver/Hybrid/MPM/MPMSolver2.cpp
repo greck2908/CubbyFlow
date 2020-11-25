@@ -106,7 +106,7 @@ void MPMSolver2::OnBeginAdvanceTimeStep(double timeIntervalInSeconds)
                    << m_particles->GetNumberOfParticles();
 
     timer.Reset();
-    TransferFromParticlesToGrids();
+    TransferFromParticlesToGrids(timeIntervalInSeconds);
     CUBBYFLOW_INFO << "TransferFromParticlesToGrids took "
                    << timer.DurationInSeconds() << " seconds";
 }
@@ -121,7 +121,7 @@ void MPMSolver2::ComputeAdvection(double timeIntervalInSeconds)
                    << timer.DurationInSeconds() << " seconds";
 }
 
-void MPMSolver2::TransferFromParticlesToGrids()
+void MPMSolver2::TransferFromParticlesToGrids(double timeIntervalInSeconds)
 {
     ArrayAccessor1<Vector2<double>> positions = m_particles->GetPositions();
     ArrayAccessor1<Vector2<double>> velocities = m_particles->GetVelocities();
@@ -129,6 +129,9 @@ void MPMSolver2::TransferFromParticlesToGrids()
     ArrayAccessor1<double> detDeformationGradients =
         GetDetDeformationGradient();
     const size_t numberOfParticles = m_particles->GetNumberOfParticles();
+    const double mass = m_particles->GetMass();
+    const double volume =
+        (4.0 / 3.0) * PI_DOUBLE * std::pow(m_particles->GetRadius(), 3);
 
     const double dx =
         1.0 / static_cast<double>(GetGridSystemData()->GetResolution().x);
@@ -157,8 +160,8 @@ void MPMSolver2::TransferFromParticlesToGrids()
 
         // Compute current Lamé parameters
         // [http://mpm.graphics Eqn. 86]
-        double e = std::exp(m_snowHardeningFactor *
-                            (1.0 - detDeformationGradients[i]));
+        const double e = std::exp(m_snowHardeningFactor *
+                                  (1.0 - detDeformationGradients[i]));
         double mu = mu_0 * e;
         double lambda = lambda_0 * e;
 
@@ -168,6 +171,22 @@ void MPMSolver2::TransferFromParticlesToGrids()
         // Polar decomposition for fixed corotated model
         Matrix2x2D r, s;
         PolarDecomposition(deformationGradients[i], r, s);
+
+        // [http://mpm.graphics Paragraph after Eqn. 176]
+        const double squaredInvDx = 4 * invDx * invDx;
+        // [http://mpm.graphics Eqn. 52]
+        Matrix2x2D pf = (2 * mu * (deformationGradients[i] - r) *
+                             deformationGradients[i].Transposed() +
+                         lambda * (j - 1) * j);
+
+        // Cauchy stress times dt and invDx
+        Matrix2x2D stress =
+            -(timeIntervalInSeconds * volume) * (squaredInvDx * pf);
+
+        // Fused APIC momentum + MLS-MPM stress contribution
+        // http://taichi.graphics/wp-content/uploads/2019/03/mls-mpm-cpic.pdf
+        // Eqn 29
+        // auto affine = stress + mass * p.C;
 
         (void)j;
         (void)mu;

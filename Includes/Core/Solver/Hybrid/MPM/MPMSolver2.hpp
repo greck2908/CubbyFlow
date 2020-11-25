@@ -100,7 +100,7 @@ class MPMSolver2 : public GridFluidSolver2
     void ComputeAdvection(double timeIntervalInSeconds) override;
 
     //! Transfers velocity field from particles to grids.
-    virtual void TransferFromParticlesToGrids();
+    virtual void TransferFromParticlesToGrids(double timeIntervalInSeconds);
 
     //! Transfers velocity field from grids to particles.
     virtual void TransferFromGridsToParticles();

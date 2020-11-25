@@ -126,6 +126,12 @@ void MPMSolver2::TransferFromParticlesToGrids()
         1.0 / static_cast<double>(GetGridSystemData()->GetResolution().x);
     const double invDx = 1.0 / dx;
 
+    // Initial Lamé parameters
+    const double mu_0 = GetYoungsModulus() / (2 * (1 + GetPoissonRatio()));
+    const double lambda_0 =
+        GetYoungsModulus() * GetPoissonRatio() /
+        ((1 + GetPoissonRatio()) * (1 - 2 * GetPoissonRatio()));
+
     for (size_t i = 0; i < numberOfParticles; ++i)
     {
         // Element-wise floor
@@ -145,9 +151,11 @@ void MPMSolver2::TransferFromParticlesToGrids()
         // [http://mpm.graphics Eqn. 86]
         double e = std::exp(m_snowHardeningFactor *
                             (1.0 - detDeformationGradients[i]));
+        double mu = mu_0 * e;
+        double lambda = lambda_0 * e;
 
-        (void)w;
-        (void)e;
+        (void)mu;
+        (void)lambda;
     }
 
     (void)velocities;

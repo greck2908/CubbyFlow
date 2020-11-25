@@ -71,6 +71,9 @@ class MPMSolver2 : public GridFluidSolver2
     //! Sets the Poisson ratio.
     void SetPoissonRatio(double newRatio);
 
+    //! Returns the deformation gradient of particles.
+    [[nodiscard]] ArrayAccessor1<Matrix2x2D> GetDeformationGradient() const;
+
     //! Returns the determinant of the deformation gradient of particles.
     [[nodiscard]] ArrayAccessor1<double> GetDetDeformationGradient() const;
 
@@ -108,7 +111,9 @@ class MPMSolver2 : public GridFluidSolver2
     ParticleSystemData2Ptr m_particles;
     ParticleEmitter2Ptr m_particleEmitter;
 
+    std::size_t m_deformationGradientID;
     std::size_t m_detDeformationGradientID;
+
     double m_snowHardeningFactor = 10.0;
     double m_youngsModulus = 1.0e-4;
     double m_poissonRatio = 0.2;

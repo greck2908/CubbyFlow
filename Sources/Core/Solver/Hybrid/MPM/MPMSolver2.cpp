@@ -24,6 +24,7 @@ MPMSolver2::MPMSolver2(const Size2& resolution, const Vector2D& gridSpacing,
     : GridFluidSolver2{ resolution, gridSpacing, gridOrigin }
 {
     m_particles = std::make_shared<ParticleSystemData2>();
+    m_deformationGradientID = m_particles->AddMatrixData(Matrix2x2D{ 1.0 });
     m_detDeformationGradientID = m_particles->AddScalarData(1.0);
 }
 
@@ -55,6 +56,11 @@ double MPMSolver2::GetPoissonRatio() const
 void MPMSolver2::SetPoissonRatio(double newRatio)
 {
     m_poissonRatio = newRatio;
+}
+
+ArrayAccessor1<Matrix2x2D> MPMSolver2::GetDeformationGradient() const
+{
+    return m_particles->MatrixDataAt(m_deformationGradientID);
 }
 
 ArrayAccessor1<double> MPMSolver2::GetDetDeformationGradient() const

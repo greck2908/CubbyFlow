@@ -134,6 +134,7 @@ void MPMSolver2::TransferFromParticlesToGrids(double timeIntervalInSeconds)
     ArrayAccessor1<Matrix2x2D> deformationGradients = GetDeformationGradient();
     ArrayAccessor1<double> detDeformationGradients =
         GetDetDeformationGradient();
+    ArrayAccessor1<Matrix2x2D> affineMomentums = GetAffineMomentum();
     const size_t numberOfParticles = m_particles->GetNumberOfParticles();
     const double mass = m_particles->GetMass();
     const double volume =
@@ -168,11 +169,11 @@ void MPMSolver2::TransferFromParticlesToGrids(double timeIntervalInSeconds)
         // [http://mpm.graphics Eqn. 86]
         const double e = std::exp(m_snowHardeningFactor *
                                   (1.0 - detDeformationGradients[i]));
-        double mu = mu_0 * e;
-        double lambda = lambda_0 * e;
+        const double mu = mu_0 * e;
+        const double lambda = lambda_0 * e;
 
         // Current volume
-        double j = deformationGradients[i].Determinant();
+        const double curVolume = deformationGradients[i].Determinant();
 
         // Polar decomposition for fixed corotated model
         Matrix2x2D r, s;
@@ -183,7 +184,7 @@ void MPMSolver2::TransferFromParticlesToGrids(double timeIntervalInSeconds)
         // [http://mpm.graphics Eqn. 52]
         Matrix2x2D pf = (2 * mu * (deformationGradients[i] - r) *
                              deformationGradients[i].Transposed() +
-                         lambda * (j - 1) * j);
+                         lambda * (curVolume - 1) * curVolume);
 
         // Cauchy stress times dt and invDx
         Matrix2x2D stress =
@@ -192,14 +193,29 @@ void MPMSolver2::TransferFromParticlesToGrids(double timeIntervalInSeconds)
         // Fused APIC momentum + MLS-MPM stress contribution
         // http://taichi.graphics/wp-content/uploads/2019/03/mls-mpm-cpic.pdf
         // Eqn 29
-        // auto affine = stress + mass * p.C;
+        Matrix2x2D affine = stress + mass * affineMomentums[i];
 
-        (void)j;
-        (void)mu;
-        (void)lambda;
+        for (std::size_t j = 0; j < 3; ++j)
+        {
+            for (std::size_t k = 0; k < 3; ++k)
+            {
+                Vector2D dPos = (Vector2D{ j, k } - fx) * dx;
+
+                // Translational momentum
+                Vector2D momentum{ velocities[i] * mass };
+                const Vector2D result =
+                    (w[j].x * w[k].y * (momentum + Vector2D{ affine * dPos }));
+
+                const std::size_t xIdx =
+                    static_cast<std::size_t>(baseCoord.x) + j;
+                const std::size_t yIdx =
+                    static_cast<std::size_t>(baseCoord.y) + k;
+                m_uvMass(xIdx, yIdx) += w[j].x * w[k].y * mass;
+                m_uDelta(xIdx, yIdx) += result.x;
+                m_vDelta(xIdx, yIdx) += result.y;
+            }
+        }
     }
-
-    (void)velocities;
 }
 
 void MPMSolver2::TransferFromGridsToParticles()

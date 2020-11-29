@@ -77,6 +77,9 @@ class MPMSolver2 : public GridFluidSolver2
     //! Returns the determinant of the deformation gradient of particles.
     [[nodiscard]] ArrayAccessor1<double> GetDetDeformationGradient() const;
 
+    //! Returns the affine momentum of particles.
+    [[nodiscard]] ArrayAccessor1<Matrix2x2D> GetAffineMomentum() const;
+
     //! Returns the particle system data.
     [[nodiscard]] const ParticleSystemData2Ptr& GetParticleSystemData() const;
 
@@ -113,6 +116,7 @@ class MPMSolver2 : public GridFluidSolver2
 
     std::size_t m_deformationGradientID;
     std::size_t m_detDeformationGradientID;
+    std::size_t m_affineMomentumID;
 
     double m_snowHardeningFactor = 10.0;
     double m_youngsModulus = 1.0e-4;

@@ -221,6 +221,8 @@ void MPMSolver2::TransferFromParticlesToGrids(double timeIntervalInSeconds)
 
 void MPMSolver2::TransferFromGridsToParticles(double timeIntervalInSeconds)
 {
+    UNUSED_VARIABLE(timeIntervalInSeconds);
+
     ArrayAccessor1<Vector2<double>> positions = m_particles->GetPositions();
     ArrayAccessor1<Vector2<double>> velocities = m_particles->GetVelocities();
     ArrayAccessor1<Matrix2x2D> affineMomentums = GetAffineMomentum();
@@ -248,6 +250,28 @@ void MPMSolver2::TransferFromGridsToParticles(double timeIntervalInSeconds)
         // Initialize values
         affineMomentums[i] = Matrix2x2D{ 0.0 };
         velocities[i] = Vector2D{ 0.0, 0.0 };
+
+        for (std::size_t j = 0; j < 3; ++j)
+        {
+            for (std::size_t k = 0; k < 3; ++k)
+            {
+                const std::size_t xIdx =
+                    static_cast<std::size_t>(baseCoord.x) + j;
+                const std::size_t yIdx =
+                    static_cast<std::size_t>(baseCoord.y) + k;
+
+                Vector2D dPos = Vector2D{ j, k } - fx;
+                Vector2D gridV =
+                    Vector2D{ m_uDelta(xIdx, yIdx), m_vDelta(xIdx, yIdx) };
+                const double weight = w[j].x * w[k].y;
+
+                // Velocity
+                velocities[i] += weight * gridV;
+                // APIC momentum
+                affineMomentums[i] +=
+                    4 * invDx * Vector2D{ weight * gridV }.Cross(dPos);
+            }
+        }
     }
 }
 

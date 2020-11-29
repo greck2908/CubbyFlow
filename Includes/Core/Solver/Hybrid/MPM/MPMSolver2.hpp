@@ -106,7 +106,7 @@ class MPMSolver2 : public GridFluidSolver2
     virtual void TransferFromParticlesToGrids(double timeIntervalInSeconds);
 
     //! Transfers velocity field from grids to particles.
-    virtual void TransferFromGridsToParticles();
+    virtual void TransferFromGridsToParticles(double timeIntervalInSeconds);
 
  private:
     void UpdateParticleEmitter(double timeIntervalInSeconds) const;

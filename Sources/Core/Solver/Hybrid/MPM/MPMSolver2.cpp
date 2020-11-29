@@ -115,14 +115,15 @@ void MPMSolver2::OnBeginAdvanceTimeStep(double timeIntervalInSeconds)
     TransferFromParticlesToGrids(timeIntervalInSeconds);
     CUBBYFLOW_INFO << "TransferFromParticlesToGrids took "
                    << timer.DurationInSeconds() << " seconds";
+
+    ApplyBoundaryCondition();
 }
 
 void MPMSolver2::ComputeAdvection(double timeIntervalInSeconds)
 {
-    UNUSED_VARIABLE(timeIntervalInSeconds);
-
     const Timer timer;
-    TransferFromGridsToParticles();
+
+    TransferFromGridsToParticles(timeIntervalInSeconds);
     CUBBYFLOW_INFO << "TransferFromGridsToParticles took "
                    << timer.DurationInSeconds() << " seconds";
 }
@@ -218,8 +219,9 @@ void MPMSolver2::TransferFromParticlesToGrids(double timeIntervalInSeconds)
     }
 }
 
-void MPMSolver2::TransferFromGridsToParticles()
+void MPMSolver2::TransferFromGridsToParticles(double timeIntervalInSeconds)
 {
+    UNUSED_VARIABLE(timeIntervalInSeconds);
 }
 
 void MPMSolver2::UpdateParticleEmitter(double timeIntervalInSeconds) const

@@ -9,6 +9,7 @@
 // property of any third parties.
 
 #include <Core/Math/PolarDecomposition.hpp>
+#include <Core/Math/SVD.hpp>
 #include <Core/Solver/Hybrid/MPM/MPMSolver2.hpp>
 #include <Core/Utils/Logging.hpp>
 #include <Core/Utils/Timer.hpp>
@@ -221,10 +222,11 @@ void MPMSolver2::TransferFromParticlesToGrids(double timeIntervalInSeconds)
 
 void MPMSolver2::TransferFromGridsToParticles(double timeIntervalInSeconds)
 {
-    UNUSED_VARIABLE(timeIntervalInSeconds);
-
     ArrayAccessor1<Vector2<double>> positions = m_particles->GetPositions();
     ArrayAccessor1<Vector2<double>> velocities = m_particles->GetVelocities();
+    ArrayAccessor1<Matrix2x2D> deformationGradients = GetDeformationGradient();
+    ArrayAccessor1<double> detDeformationGradients =
+        GetDetDeformationGradient();
     ArrayAccessor1<Matrix2x2D> affineMomentums = GetAffineMomentum();
     const size_t numberOfParticles = m_particles->GetNumberOfParticles();
 
@@ -272,6 +274,31 @@ void MPMSolver2::TransferFromGridsToParticles(double timeIntervalInSeconds)
                     4 * invDx * Vector2D{ weight * gridV }.Cross(dPos);
             }
         }
+
+        // Advection
+        positions[i] += timeIntervalInSeconds * velocities[i];
+
+        // MLS-MPM F-update
+        Matrix2x2D newDeformationGradient =
+            (Matrix2x2D{ 1 } + timeIntervalInSeconds * affineMomentums[i]) *
+            deformationGradients[i];
+
+        Matrix2x2D svdU, svdV;
+        Vector2D svdW;
+        SVD(deformationGradients[i], svdU, svdW, svdV);
+
+        Matrix2x2D sig{ svdW.x, 0, 0, svdW.y };
+
+        const double oldVolume = newDeformationGradient.Determinant();
+        newDeformationGradient = svdU * sig * svdU.Transposed();
+
+        const double newDetDeformationGradient =
+            Clamp(detDeformationGradients[i] * oldVolume /
+                      newDeformationGradient.Determinant(),
+                  0.6, 20.0);
+
+        detDeformationGradients[i] = newDetDeformationGradient;
+        deformationGradients[i] = newDeformationGradient;
     }
 }
 

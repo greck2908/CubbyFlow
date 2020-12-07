@@ -86,6 +86,7 @@
 #include <API/Python/Solver/Grid/GridSmokeSolver.hpp>
 #include <API/Python/Solver/Hybrid/APIC/APICSolver.hpp>
 #include <API/Python/Solver/Hybrid/FLIP/FLIPSolver.hpp>
+#include <API/Python/Solver/Hybrid/MPM/MPMSolver.hpp>
 #include <API/Python/Solver/Hybrid/PIC/PICSolver.hpp>
 #include <API/Python/Solver/LevelSet/ENOLevelSetSolver.hpp>
 #include <API/Python/Solver/LevelSet/FMMLevelSetSolver.hpp>
@@ -337,6 +338,8 @@ PYBIND11_MODULE(pyCubbyFlow, m)
     AddFLIPSolver3(m);
     AddAPICSolver2(m);
     AddAPICSolver3(m);
+    AddMPMSolver2(m);
+    AddMPMSolver3(m);
     AddParticleSystemSolver2(m);
     AddParticleSystemSolver3(m);
     AddSPHSolver2(m);

@@ -28,8 +28,8 @@ template <typename T>
 class Vector<T, 2> final
 {
  public:
-    static_assert(std::is_floating_point<T>::value,
-                  "Vector only can be instantiated with floating point types");
+    //static_assert(std::is_floating_point<T>::value,
+    //              "Vector only can be instantiated with floating point types");
 
     //! Constructs default vector (0, 0).
     constexpr Vector() : x{ 0 }, y{ 0 }

@@ -118,10 +118,6 @@ class MPMSolver2 : public GridFluidSolver2
     std::size_t m_detDeformationGradientID;
     std::size_t m_affineMomentumID;
 
-    Array2<double> m_uvMass;
-    Array2<double> m_uDelta;
-    Array2<double> m_vDelta;
-
     double m_snowHardeningFactor = 10.0;
     double m_youngsModulus = 1.0e-4;
     double m_poissonRatio = 0.2;

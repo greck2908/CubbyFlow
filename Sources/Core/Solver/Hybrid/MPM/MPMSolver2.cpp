@@ -131,6 +131,7 @@ void MPMSolver2::ComputeAdvection(double timeIntervalInSeconds)
 
 void MPMSolver2::TransferFromParticlesToGrids(double timeIntervalInSeconds)
 {
+    FaceCenteredGrid2Ptr flow = GetGridSystemData()->GetVelocity();
     ArrayAccessor1<Vector2<double>> positions = m_particles->GetPositions();
     ArrayAccessor1<Vector2<double>> velocities = m_particles->GetVelocities();
     ArrayAccessor1<Matrix2x2D> deformationGradients = GetDeformationGradient();
@@ -146,6 +147,12 @@ void MPMSolver2::TransferFromParticlesToGrids(double timeIntervalInSeconds)
         1.0 / static_cast<double>(GetGridSystemData()->GetResolution().x);
     const double invDx = 1.0 / dx;
 
+    // Clear velocity to zero
+    flow->Fill(Vector2D{});
+
+    ArrayAccessor2<double> u = flow->GetUAccessor();
+    ArrayAccessor2<double> v = flow->GetVAccessor();
+
     // Initial Lamé parameters
     const double mu_0 = GetYoungsModulus() / (2 * (1 + GetPoissonRatio()));
     const double lambda_0 =
@@ -155,17 +162,18 @@ void MPMSolver2::TransferFromParticlesToGrids(double timeIntervalInSeconds)
     for (size_t i = 0; i < numberOfParticles; ++i)
     {
         // Element-wise floor
-        Vector2D baseCoord =
-            Floor(positions[i].x * invDx - Vector2D{ 0.5, 0.5 });
-        Vector2D fx = positions[i].x * invDx - baseCoord;
+        Vector2<int> baseCoord =
+            (positions[i] * invDx - Vector2D{ 0.5, 0.5 }).CastTo<int>();
+        Vector2D fx = positions[i] * invDx - baseCoord.CastTo<double>();
 
         // Quadratic kernels
         // [http://mpm.graphics Eq. 123, with x=fx,fx-1,fx-2]
-        Vector2D w[3] = {
-            Vector2D{ 0.5, 0.5 } * Sqrt(Vector2D{ 1.5, 1.5 }.Sub(fx)),
-            Vector2D{ 0.75, 0.75 } - Sqrt(fx.Sub(Vector2D{ 1.0, 1.0 })),
-            Vector2D{ 0.5, 0.5 } - Sqrt(fx.Sub(Vector2D{ 0.5, 0.5 }))
-        };
+        Vector2D w[3] = { Vector2D{ 0.5, 0.5 } *
+                              (Vector2D{ 1.5, 1.5 }.Sub(fx)).LengthSquared(),
+                          Vector2D{ 0.75, 0.75 } -
+                              fx.Sub(Vector2D{ 1.0, 1.0 }).LengthSquared(),
+                          Vector2D{ 0.5, 0.5 } -
+                              fx.Sub(Vector2D{ 0.5, 0.5 }).LengthSquared() };
 
         // Compute current Lamé parameters
         // [http://mpm.graphics Eqn. 86]
@@ -212,9 +220,8 @@ void MPMSolver2::TransferFromParticlesToGrids(double timeIntervalInSeconds)
                     static_cast<std::size_t>(baseCoord.x) + j;
                 const std::size_t yIdx =
                     static_cast<std::size_t>(baseCoord.y) + k;
-                m_uvMass(xIdx, yIdx) += w[j].x * w[k].y * mass;
-                m_uDelta(xIdx, yIdx) += result.x;
-                m_vDelta(xIdx, yIdx) += result.y;
+                u(xIdx, yIdx) += result.x;
+                v(xIdx, yIdx) += result.y;
             }
         }
     }
@@ -222,6 +229,7 @@ void MPMSolver2::TransferFromParticlesToGrids(double timeIntervalInSeconds)
 
 void MPMSolver2::TransferFromGridsToParticles(double timeIntervalInSeconds)
 {
+    FaceCenteredGrid2Ptr flow = GetGridSystemData()->GetVelocity();
     ArrayAccessor1<Vector2<double>> positions = m_particles->GetPositions();
     ArrayAccessor1<Vector2<double>> velocities = m_particles->GetVelocities();
     ArrayAccessor1<Matrix2x2D> deformationGradients = GetDeformationGradient();
@@ -234,20 +242,24 @@ void MPMSolver2::TransferFromGridsToParticles(double timeIntervalInSeconds)
         1.0 / static_cast<double>(GetGridSystemData()->GetResolution().x);
     const double invDx = 1.0 / dx;
 
+    ArrayAccessor2<double> u = flow->GetUAccessor();
+    ArrayAccessor2<double> v = flow->GetVAccessor();
+
     for (size_t i = 0; i < numberOfParticles; ++i)
     {
         // Element-wise floor
-        Vector2D baseCoord =
-            Floor(positions[i].x * invDx - Vector2D{ 0.5, 0.5 });
-        Vector2D fx = positions[i].x * invDx - baseCoord;
+        Vector2<int> baseCoord =
+            (positions[i] * invDx - Vector2D{ 0.5, 0.5 }).CastTo<int>();
+        Vector2D fx = positions[i] * invDx - baseCoord.CastTo<double>();
 
         // Quadratic kernels
         // [http://mpm.graphics Eq. 123, with x=fx,fx-1,fx-2]
-        Vector2D w[3] = {
-            Vector2D{ 0.5, 0.5 } * Sqrt(Vector2D{ 1.5, 1.5 }.Sub(fx)),
-            Vector2D{ 0.75, 0.75 } - Sqrt(fx.Sub(Vector2D{ 1.0, 1.0 })),
-            Vector2D{ 0.5, 0.5 } - Sqrt(fx.Sub(Vector2D{ 0.5, 0.5 }))
-        };
+        Vector2D w[3] = { Vector2D{ 0.5, 0.5 } *
+                              (Vector2D{ 1.5, 1.5 }.Sub(fx)).LengthSquared(),
+                          Vector2D{ 0.75, 0.75 } -
+                              fx.Sub(Vector2D{ 1.0, 1.0 }).LengthSquared(),
+                          Vector2D{ 0.5, 0.5 } -
+                              fx.Sub(Vector2D{ 0.5, 0.5 }).LengthSquared() };
 
         // Initialize values
         affineMomentums[i] = Matrix2x2D{ 0.0 };
@@ -263,8 +275,7 @@ void MPMSolver2::TransferFromGridsToParticles(double timeIntervalInSeconds)
                     static_cast<std::size_t>(baseCoord.y) + k;
 
                 Vector2D dPos = Vector2D{ j, k } - fx;
-                Vector2D gridV =
-                    Vector2D{ m_uDelta(xIdx, yIdx), m_vDelta(xIdx, yIdx) };
+                Vector2D gridV = Vector2D{ u(xIdx, yIdx), v(xIdx, yIdx) };
                 const double weight = w[j].x * w[k].y;
 
                 // Velocity
